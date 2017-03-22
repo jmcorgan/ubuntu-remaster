@@ -24,7 +24,7 @@ if test_overlay_workdir_needed ; then
     workdiropt='-oworkdir='$ROOTFSMNT_WORK
 fi
 
-$SUDO $MOUNT -t overlay \
+$SUDO $MOUNT -t $(get_overlay_type_name) \
              -olowerdir=$ROOTFSMNT_RO \
              -oupperdir=$ROOTFSMNT_RW \
              $workdiropt \
