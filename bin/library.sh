@@ -57,8 +57,8 @@ get_overlay_type_name () {
     local major=$(echo $kernel | cut -f 1 -d '.')
     local minor=$(echo $kernel | cut -f 2 -d '.')
 
-    if [ "$major" -gt "3" ] ||
-    [ "$major" -eq "3" -a "$minor" -gt "18" ]; then
+    if [ "$major" -ge "3" ] ||
+    [ "$major" -eq "3" -a "$minor" -ge "18" ]; then
         echo "overlay"    # use new identifier
     else
         echo "overlayfs" # use old identifier
