@@ -53,12 +53,8 @@ test_overlay_workdir_needed () {
 }
 
 get_overlay_type_name () {
-    local kernel=$(uname -r)
-    local major=$(echo $kernel | cut -f 1 -d '.')
-    local minor=$(echo $kernel | cut -f 2 -d '.')
-
-    if [ "$major" -ge "3" ] ||
-    [ "$major" -eq "3" -a "$minor" -ge "18" ]; then
+    # test for kernel version >=3.18
+    if test_overlay_workdir_needed; then
         echo "overlay"    # use new identifier
     else
         echo "overlayfs" # use old identifier
