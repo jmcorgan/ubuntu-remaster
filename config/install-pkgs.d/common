@@ -1,8 +1,8 @@
 aptitude
 ccache
-compizconfig-settings-manager
+compiz-core
 curl
-dconf-tools
+dconf-cli
 emacs24
 htop
 indicator-cpufreq
