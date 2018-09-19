@@ -1,0 +1,20 @@
+#!/bin/sh
+set -o nounset
+#set -x #DEBUG
+
+. bin/library.sh
+
+# Exit if not configured - only needed when using encrypted image
+if [ "${CONFIG_ENCRYPT_ROOTFS-x}" != "y" ] ; then exit 0; fi
+
+# Exit if already copied
+if [ -f $ISOMNT_RW/casper/vmlinuz.efi ] ; then exit 0; fi
+
+# Copy boot kernel to EFI file extension as custom initrd looks for that instead (!)
+[ -f $ISOMNT_RW/casper/vmlinuz ] || die ISO filesystem vmlinuz file not found!
+$SUDO cp $ISOMNT_RW/casper/vmlinuz $ISOMNT_RW/casper/vmlinuz.efi
+
+# Indicate ISO RW filesystem modified
+touch stamps/isofs.stamp
+
+exit 0

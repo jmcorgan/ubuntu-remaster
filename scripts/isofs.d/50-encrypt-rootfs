@@ -12,7 +12,7 @@ LOOPFILE=$PLAINTEXT.luks
 if [ "${CONFIG_ENCRYPT_ROOTFS-x}" != "y" ] ; then exit 0; fi
 
 # Exit if LUKS file exists and plaintext is a symlink
-if [ -f $LOOPFILE ] && [ -h $PLAINTEXT ] ; then exit 0; fi
+if [ -f $LOOPFILE ] && [ -L $PLAINTEXT ] ; then exit 0; fi
 
 require_iso_rw_mounted
 
