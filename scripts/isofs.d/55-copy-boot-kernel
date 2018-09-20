@@ -4,17 +4,20 @@ set -o nounset
 
 . bin/library.sh
 
-# Exit if not configured - only needed when using encrypted image
-if [ "${CONFIG_ENCRYPT_ROOTFS-x}" != "y" ] ; then exit 0; fi
+# Copy boot kernel to EFI file extension as remastered initrd looks for that instead
+[ -f $ISOMNT_RW/casper/vmlinuz.efi ] || {
+    [ -f $ISOMNT_RW/casper/vmlinuz ] || die ISO filesystem vmlinuz file not found!
+    $SUDO cp $ISOMNT_RW/casper/vmlinuz $ISOMNT_RW/casper/vmlinuz.efi
+    touch stamps/isofs.stamp
+}
 
-# Exit if already copied
-if [ -f $ISOMNT_RW/casper/vmlinuz.efi ] ; then exit 0; fi
-
-# Copy boot kernel to EFI file extension as custom initrd looks for that instead (!)
-[ -f $ISOMNT_RW/casper/vmlinuz ] || die ISO filesystem vmlinuz file not found!
-$SUDO cp $ISOMNT_RW/casper/vmlinuz $ISOMNT_RW/casper/vmlinuz.efi
-
-# Indicate ISO RW filesystem modified
-touch stamps/isofs.stamp
+# Remastered boot looks for initrd.lz now. Newly created one already has this name
+# but if we didn't make one we need to copy it over. Copying because not sure if this
+# is true 100% of the time.
+[ -f $ISOMNT_RW/casper/initrd.lz ] || {
+    [ -f $ISOMNT_RW/casper/initrd ] || die ISO filesystem initrd file not found!
+    $SUDO cp $ISOMNT_RW/casper/initrd $ISOMNT_RW/casper/initrd.lz
+    touch stamps/isofs.stamp
+}
 
 exit 0
