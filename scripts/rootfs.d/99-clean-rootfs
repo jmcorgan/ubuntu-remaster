@@ -22,7 +22,10 @@ done
 # Answer: truncate!
 mkdir -p /var/log/apt
 
-# updated_rootfs
+# Mark as done
 make_stamp $0
+
+# Updated rootfs
+updated_rootfs
 
 exit 0
